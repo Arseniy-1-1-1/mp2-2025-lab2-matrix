@@ -14,7 +14,7 @@ void main()
   int i, j;
 
   setlocale(LC_ALL, "Russian");
-  cout << "Тестирование класс работы с матрицами"
+  cout << "Test class work with matrix"
     << endl;
   for (i = 0; i < 5; i++)
     for (j = i; j < 5; j++ )
