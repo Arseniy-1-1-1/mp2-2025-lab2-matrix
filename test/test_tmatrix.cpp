@@ -68,15 +68,16 @@ TEST(TDynamicMatrix, can_assign_matrix_to_itself)
 {
     TDynamicMatrix<int> m(3);
     m.at(1).at(1) = 9;
-    EXPECT_NO_THROW(m = m);
+    m = m;
     EXPECT_EQ(m.at(1).at(1), 9);
 }
 
 TEST(TDynamicMatrix, can_assign_matrices_of_equal_size)
 {
-    TDynamicMatrix<int> m1(3), m2(3);
+    TDynamicMatrix<int> m1(3);
     m1.at(1).at(1) = 4;
-    ASSERT_NO_THROW(m2 = m1);
+    TDynamicMatrix<int> m2(3);
+    m2 = m1;
     EXPECT_EQ(m2.at(1).at(1), 4);
 }
 
@@ -89,10 +90,18 @@ TEST(TDynamicMatrix, assign_operator_change_matrix_size)
 
 TEST(TDynamicMatrix, can_assign_matrices_of_different_size)
 {
-    TDynamicMatrix<int> m1(3), m2(5);
+    TDynamicMatrix<int> m1(3);
     m1.at(1).at(1) = 4;
-    ASSERT_NO_THROW(m2 = m1);
+    TDynamicMatrix<int> m2(5);
+    m2 = m1;
     EXPECT_EQ(m2.size(), 3);
+}
+TEST(TDynamicMatrix, can_assign_matrices_of_different_size_content)
+{
+    TDynamicMatrix<int> m1(3);
+    m1.at(1).at(1) = 4;
+    TDynamicMatrix<int> m2(5);
+    m2 = m1;
     EXPECT_EQ(m2.at(1).at(1), 4);
 }
 

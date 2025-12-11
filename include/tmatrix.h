@@ -32,7 +32,9 @@ public:
         if (size <= 0 || size > MAX_VECTOR_SIZE)
             throw out_of_range("Vector size should be in (0, MAX_VECTOR_SIZE]");
         sz = static_cast<size_t>(size);
-        pMem = new T[sz]();
+        pMem = new(std::nothrow) T[sz]();
+        if (pMem==nullptr)
+            throw std::bad_alloc();
     }
 
     TDynamicVector(const TDynamicVector& v) : sz(v.sz), pMem(nullptr) {
@@ -46,6 +48,7 @@ public:
 
     ~TDynamicVector() {
         delete[] pMem;
+        pMem = nullptr;
     }
     TDynamicVector& operator=(const TDynamicVector& v) {
         if (this != &v) {
@@ -82,13 +85,13 @@ public:
   // индексация с контролем
   T& at(size_t ind)
   {
-      if (ind < 0 || static_cast<size_t>(ind) >= size()) 
+      if (ind >= size())
           throw out_of_range("Index out of range");
       return pMem[ind];
   }
   const T& at(size_t ind) const
   {
-      if (ind < 0 || static_cast<size_t>(ind) >= size()) 
+      if (ind >= size())
           throw out_of_range("Index out of range");
       return pMem[ind];
   }
@@ -101,7 +104,9 @@ public:
       return true;
   }
 
-  bool operator!=(const TDynamicVector& v) const noexcept { return !(*this == v); }
+  bool operator!=(const TDynamicVector& v) const noexcept {
+      return !(*this == v); 
+  }
 
   TDynamicVector operator+(T val) const {
       TDynamicVector res(*this);
@@ -167,7 +172,7 @@ public:
 // Динамическая матрица - 
 // шаблонная матрица на динамической памяти
 template<typename T>
-class TDynamicMatrix
+class TDynamicMatrix : public TDynamicVector<TDynamicVector<T>>
 {
 private:
     size_t sz;

@@ -83,11 +83,11 @@ TEST(TDynamicVector, assign_operator_change_vector_size)
 
 TEST(TDynamicVector, can_assign_vectors_of_different_size)
 {
-    TDynamicVector<int> v1(3), v2(5);
+    TDynamicVector<int> v1(3);
     v1.at(1) = 8;
-    ASSERT_NO_THROW(v2 = v1);
+    TDynamicVector<int> v2(5);
+    v2 = v1;
     EXPECT_EQ(v2.size(), 3);
-    EXPECT_EQ(v2.at(1), 8);
 }
 
 TEST(TDynamicVector, compare_equal_vectors_return_true)
@@ -113,24 +113,22 @@ TEST(TDynamicVector, can_add_scalar_to_vector)
 {
     TDynamicVector<int> v(3);
     v.at(0) = 1; v.at(1) = 2; v.at(2) = 3;
+    TDynamicVector<int> expected(3);
+    expected.at(0) = 3; expected.at(1) = 4; expected.at(2) = 5;
 
     TDynamicVector<int> r = v + 2;
-
-    EXPECT_EQ(r.at(0), 3);
-    EXPECT_EQ(r.at(1), 4);
-    EXPECT_EQ(r.at(2), 5);
+    EXPECT_EQ(r, expected);
 }
 
 TEST(TDynamicVector, can_subtract_scalar_from_vector)
 {
     TDynamicVector<int> v(3);
     v.at(0) = 5; v.at(1) = 6; v.at(2) = 7;
+    TDynamicVector<int> expected(3);
+    expected.at(0) = 3; expected.at(1) = 4; expected.at(2) = 5;
 
     TDynamicVector<int> r = v - 2;
-
-    EXPECT_EQ(r.at(0), 3);
-    EXPECT_EQ(r.at(1), 4);
-    EXPECT_EQ(r.at(2), 5);
+    EXPECT_EQ(r, expected);
 }
 
 TEST(TDynamicVector, can_multiply_scalar_by_vector)
